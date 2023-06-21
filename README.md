@@ -53,15 +53,12 @@ A School Library App built with Ruby using Object Oriented Programming (OOP).
 
 ### Key Features <a name="key-features"></a>
 
-- **N/A**
+- **Class Person (id, name, and age, parent_permission, of_age(), can_use_services())**
+- **Class Student (classroom, play_hooky()) inherits class Person**
+- **Class Teacher (specialization, can_use_services()) inherits class Person**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🚀 Live Demo <a name="live-demo"></a>
-
-- N/A
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
@@ -166,6 +163,6 @@ I would like to thank the [Microverse team](https://www.microverse.org/).
 
 # 📝 License <a name="license"></a>
 
-This project is [MIT](./MIT.md) licensed.
+This project is [MIT](./LICENSE) licensed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
