@@ -1,4 +1,5 @@
 require './nameable'
+require './person'
 
 class Decorator < Nameable
   def initialize(nameable)
@@ -19,6 +20,13 @@ end
 
 class TrimmerDecorator < Decorator
   def correct_name
-    @nameable[0,9]
+    @nameable.correct_name[0, 9]
   end
 end
+
+person = Person.new(22, 'maximilianus')
+puts person.correct_name
+capitalizedperson = CapitalizeDecorator.new(person)
+puts capitalizedperson.correct_name
+capitalizedtrimmedperson = TrimmerDecorator.new(capitalizedperson)
+puts capitalizedtrimmedperson.correct_name
