@@ -10,8 +10,8 @@ class Person < Nameable
     @rental = []
   end
 
-  attr_reader :id, :rental
-  attr_accessor :name, :age
+  attr_reader :id
+  attr_accessor :name, :age, :rental
 
   def correct_name
     @name

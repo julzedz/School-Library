@@ -4,12 +4,12 @@ require './classroom'
 require './student'
 
 # TEST DECORATORS
-# person = Person.new(22, 'maximilianus')
-# puts person.correct_name
-# capitalizedperson = CapitalizeDecorator.new(person)
-# puts capitalizedperson.correct_name
-# capitalizedtrimmedperson = TrimmerDecorator.new(capitalizedperson)
-# puts capitalizedtrimmedperson.correct_name
+person = Person.new(22, 'maximilianus')
+puts person.correct_name
+capitalizedperson = CapitalizeDecorator.new(person)
+puts capitalizedperson.correct_name
+capitalizedtrimmedperson = TrimmerDecorator.new(capitalizedperson)
+puts capitalizedtrimmedperson.correct_name
 
 # TEST RELATIONSHIP BETWEEN CLASSROOM AND STUDENTS
 classroom1 = Classroom.new('Class 1')
