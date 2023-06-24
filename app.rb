@@ -4,19 +4,29 @@ class App
     @personlist = []
   end
 
-  def list_books
-    if @booklist.length == 0
-      puts 'Empty!\n'
+  def list_books(books)
+    if books.empty?
+      puts 'You have no books yet!\n'
     else
-      @booklist.each { |index, content| puts '#{index} - #{content}'}
+      books.each do |book|
+        puts 'Title: #{book.title}\n'
+        puts 'Author: #{book.author}\n'
+        puts '------------------\n'
     end
   end
 
-  def list_persons
-    if @personlist.length == 0
-      puts 'Empty!\n'
+  def list_persons(persons)
+    if persons.empty?
+      puts 'Oops, no person added yet!\n'
     else
-      @personlist.each { |index, content| puts '#{index} - #{content}'}
+      persons.each do |person|
+        puts 'No.: #{person.id}\n'
+        puts 'Name: #{person.name}\n'
+        puts 'Age: #{person.age}\n'
+        puts 'Parent Permission: #{person.parent_permission}\n'
+        puts '-----------\n'
+      end
+    end
   end
 
   def create_person(person)
