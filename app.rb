@@ -76,6 +76,45 @@ class App
     puts 'You successfully added a book!\n'
   end
 
+  def add_rentals(persons, books, rentals)
+    if persons.empty?
+      puts 'Oops, no person to rent. \n'
+    elsif books.empty?
+      puts 'Oops, no book to rent. \n'
+    else
+      puts 'Choose a person: \n'
+      persons.each{|index, person| puts '#{person.name} - #{person.id} #{person.age}'}
+      puts 'Person index: '
+      person_index = gets.chomp.to_i
+
+      puts 'Choose a book: \n'
+      books.each {|index, book| puts '#{book.id} - #{book.title} #person.author}'}
+      puts 'Person index: '
+      book_index = gets.chomp.to_i
+    end
+
+    rental = Rental.new(persons[person_index], books[book_index])
+    rentals.push(rental)
+    puts 'You successfully rented a book! \n'
+  end
+
+  def list_rentals(persons, rentals)
+    if rentals.empty?
+      puts 'Oops, you have taken no rents yet! \n'
+    else
+      puts 'Choose a person by index: \n'
+      persons.each {|index, person| puts '#{person.index} - #{person.name}'}
+      puts 'Person index: '
+      person_index = gets.chomp.to_i
+      name = persons[person_index].name
+      rentals.each do |rental|
+        if rental.person.name = name
+          puts rental.rentals
+        end
+      end
+    end
+  end
+
   app = App.new
   app.list_books
   app.list_persons
