@@ -29,17 +29,17 @@ class App
     end
   end
 
-  def create_person(person)
-    puts 'Press 1 to create a student or 2 to create a teacher: \n'
+  def add_person(person)
+    puts 'Press 1 to add a student or 2 to add a teacher: \n'
     option = gets.chomp
     if option = '1'
-      create_student(person)
+      add_student(person)
     elsif option = '2'
-      create_teacher(person)
+      add_teacher(person)
     end
   end
 
-  def create_student(person)
+  def add_student(person)
     puts 'Enter name: \n'
     name = gets.chomp
     puts 'Enter age: \n'
@@ -49,10 +49,10 @@ class App
 
     student = Student.new(name, age, classroom, parent_permission: true)
     person.push(student)
-    puts 'You have successfully added a student!\n'
+    puts 'You successfully added a student!\n'
   end
 
-  def create_teacher(person)
+  def add_teacher(person)
     puts 'Enter name: \n'
     name = gets.chomp
     puts 'Enter age: \n'
@@ -62,7 +62,18 @@ class App
 
     teacher = Teacher.new(name, age, specialization)
     person.push(teacher)
-    puts 'You have successfully added a teacher!\n'
+    puts 'You successfully added a teacher!\n'
+  end
+
+  def add_books(books)
+    puts 'Enter title: \n'
+    title = gets.chomp
+    puts 'Enter author: \n'
+    author = gets.chomp
+
+    book = Book.new(title, author)
+    books.push(book)
+    puts 'You successfully added a book!\n'
   end
 
   app = App.new
