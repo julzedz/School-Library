@@ -107,11 +107,11 @@ class App
   end
 
   def add_rentals
-    puts 'Enter the ID of the book you want to rent: '
+    puts 'Enter the index of the book you want to rent: '
     @books.each_with_index { |book, index| puts "#{index} - Title: #{book.title}, Author: #{book.author}" }
     book_index = gets.chomp.to_i
 
-    puts 'Enter the ID of the person who wants to rent the book: '
+    puts 'Enter the index of the person who wants to rent the book: '
     @persons.each_with_index do |person, index|
       if person.is_a? Student
         print "#{index} - [Student] Name: #{person.name}, ID: #{person.id} "
