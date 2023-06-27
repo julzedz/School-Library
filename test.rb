@@ -1,7 +1,7 @@
-require './person'
-require './decorator'
-require './classroom'
-require './student'
+require_relative 'person'
+require_relative 'decorator'
+require_relative 'classroom'
+require_relative 'student'
 
 # TEST DECORATORS
 person = Person.new(22, 'maximilianus')
