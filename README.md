@@ -1,4 +1,4 @@
-# School-Library-Oop
+# School-Library
 
 <a name="readme-top"></a>
 
@@ -118,12 +118,6 @@ To run the project, open your project in your terminal and type:
 - GitHub: [Jules Edozie](https://github.com/julzedz)
 - LinkedIn: [Jules Edozie](https://www.linkedin.com/in/jules-edozie-b59b94234/)
 - Twitter: [@julzedz](https://twitter.com/julzedz)
-
-👤 **Jose Alejandro Velasquez**
-
-- GitHub: [VelzckC0D3](https://github.com/VelzckC0D3)
-- LinkedIn: [Alejandro Velasquez](https://www.linkedin.com/in/velzckcode/)
-- Twitter: [@velzck](https://twitter.com/velzck)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
