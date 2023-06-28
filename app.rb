@@ -4,14 +4,18 @@ require_relative 'person'
 require_relative 'rental'
 require_relative 'student'
 require_relative 'teacher'
+require 'json'
+require_relative 'util'
 
 class App
+  include Utilities
   attr_accessor :people, :books, :rentals
 
-  def initialize
+  def initialize(opt)
     @books = []
     @persons = []
     @rentals = []
+    @options = opt
   end
 
   def list_books
