@@ -5,17 +5,14 @@ require_relative 'rental'
 require_relative 'student'
 require_relative 'teacher'
 require 'json'
-require_relative 'util'
 
 class App
-  include Utilities
   attr_accessor :people, :books, :rentals
 
-  def initialize(opt)
+  def initialize
     @books = []
     @persons = []
     @rentals = []
-    @options = opt
   end
 
   def list_books
@@ -130,5 +127,76 @@ class App
     rental = Rental.new(@persons[person_index], @books[book_index])
     @rentals.push(rental)
     puts 'You successfully added a rental!'
+  end
+
+  def save_data
+    save_books
+    save_persons
+    save_rentals
+  end
+
+  def load_data
+    load_books
+    load_persons
+    load_rentals
+  end
+
+  private
+
+  def save_books
+    File.open('data/books.json', 'w') do |file|
+      file.write(JSON.generate(@books))
+    end
+  end
+
+  def load_books
+    if File.exist?('data/books.json')
+      books_data = JSON.parse(File.read('data/books.json'))
+      @books = books_data.map { |book_data| Book.new(book_data['title'], book_data['author']) }
+    end
+  end
+
+  def save_persons
+    File.open('data/persons.json', 'w') do |file|
+      file.write(JSON.generate(@persons))
+    end
+  end
+
+  def load_persons
+    if File.exist?('data/persons.json')
+      persons_data = JSON.parse(File.read('data/persons.json'))
+      @persons = persons_data.map do |person_data|
+        if person_data['classroom'].nil?
+          Teacher.new(person_data['id'], person_data['age'], person_data['specialization'], person_data['name'], parent_permission: true)
+        else
+          Student.new(person_data['id'], person_data['age'], person_data['classroom'], person_data['name'], parent_permission: true)
+        end
+      end
+    end
+  end
+
+  def save_rentals
+    File.open('data/rentals.json', 'w') do |file|
+      file.write(JSON.generate(@rentals))
+    end
+  end
+
+  def load_rentals
+    if File.exist?('data/rentals.json')
+      rentals_data = JSON.parse(File.read('data/rentals.json'))
+      @rentals = rentals_data.map do |rental_data|
+        book = find_book_by_title(rental_data['book']['title'])
+        person = find_person_by_id(rental_data['person']['id'])
+        Rental.new(person, book, Time.parse(rental_data['date']))
+      end
+    end
+  end
+
+  def find_book_by_title(title)
+    @books.find { |book| book.title == title }
+  end
+
+  def find_person_by_id(id)
+    @persons.find { |person| person.id == id }
   end
 end
