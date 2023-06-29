@@ -24,11 +24,13 @@ ACTIONS = {
 
 def main
   puts 'Welcome to the School Library!'
-  menu
   app = App.new
+  app.load_data # load data from files on startup
+  menu
   while (choice = gets.to_i)
     if choice == 7
       puts 'Hope you enjoyed using this app. Good bye!'
+      app.save_data # save data to files before exiting
       exit
     end
     method_name = ACTIONS[choice]
