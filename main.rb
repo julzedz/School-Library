@@ -25,7 +25,7 @@ ACTIONS = {
 def main
   puts 'Welcome to the School Library!'
   app = App.new
-  app.load_data # load data from files on startup
+  # app.load_data # load data from files on startup
   menu
   while (choice = gets.to_i)
     if choice == 7

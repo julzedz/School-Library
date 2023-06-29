@@ -135,68 +135,78 @@ class App
     save_rentals
   end
 
-  def load_data
-    load_books
-    load_persons
-    load_rentals
-  end
+  # def load_data
+  #   load_books
+  #   load_persons
+  #   load_rentals
+  # end
 
   private
 
   def save_books
-    File.open('data/books.json', 'w') do |file|
-      file.write(JSON.generate(@books))
-    end
+    File.write('data/books.json', JSON.generate(@books))
   end
 
-  def load_books
-    if File.exist?('data/books.json')
-      books_data = JSON.parse(File.read('data/books.json'))
-      @books = books_data.map { |book_data| Book.new(book_data['title'], book_data['author']) }
-    end
-  end
+  # def load_books
+  #   books_data = load_json_from_file('./data/books.json')
+
+  #   if books_data.is_a?(Array)
+  #     @books = books_data.map { |book_data| Book.new(book_data['title'], book_data['author']) }
+  #   elsif books_data.is_a?(Hash)
+  #     @books = [Book.new(books_data['title'], books_data['author'])]
+  #   end
+  # end
 
   def save_persons
-    File.open('data/persons.json', 'w') do |file|
-      file.write(JSON.generate(@persons))
-    end
+    File.write('data/persons.json', JSON.generate(@persons))
   end
 
-  def load_persons
-    if File.exist?('data/persons.json')
-      persons_data = JSON.parse(File.read('data/persons.json'))
-      @persons = persons_data.map do |person_data|
-        if person_data['classroom'].nil?
-          Teacher.new(person_data['id'], person_data['age'], person_data['specialization'], person_data['name'], parent_permission: true)
-        else
-          Student.new(person_data['id'], person_data['age'], person_data['classroom'], person_data['name'], parent_permission: true)
-        end
-      end
-    end
-  end
+  # def load_persons
+  #   persons_data = load_json_from_file('data/persons.json')
+
+  #   return unless File.exist?('data/persons.json') && !File.empty?('data/persons.json')
+
+  #   persons_data = JSON.parse(File.read('data/persons.json'))
+  #   @persons = persons_data.map do |person_data|
+  #     if person_data.key?('classroom')
+  #       Student.new(person_data['id'], person_data['age'], person_data['classroom'], person_data['name'],
+  #                   parent_permission: true)
+  #     else
+  #       Teacher.new(person_data['id'], person_data['age'], person_data['specialization'], person_data['name'],
+  #                   parent_permission: true)
+  #     end
+  #   end
+  # end
 
   def save_rentals
-    File.open('data/rentals.json', 'w') do |file|
-      file.write(JSON.generate(@rentals))
-    end
+    File.write('data/rentals.json', JSON.generate(@rentals))
   end
 
-  def load_rentals
-    if File.exist?('data/rentals.json')
-      rentals_data = JSON.parse(File.read('data/rentals.json'))
-      @rentals = rentals_data.map do |rental_data|
-        book = find_book_by_title(rental_data['book']['title'])
-        person = find_person_by_id(rental_data['person']['id'])
-        Rental.new(person, book, Time.parse(rental_data['date']))
-      end
-    end
-  end
+  # def load_rentals
+  #   rentals_data = load_json_from_file('data/rentals.json')
 
-  def find_book_by_title(title)
-    @books.find { |book| book.title == title }
-  end
+  #   return unless File.exist?('data/rentals.json') && !File.empty?('data/rentals.json')
 
-  def find_person_by_id(id)
-    @persons.find { |person| person.id == id }
-  end
+  #   rentals_data = JSON.parse(File.read('data/rentals.json'))
+  #   @rentals = rentals_data.map do |rental_data|
+  #     book = find_book_by_title(rental_data['book']['title'])
+  #     person = find_person_by_id(rental_data['person']['id'])
+  #     Rental.new(person, book, Time.parse(rental_data['date']))
+  #   end
+  # end
+
+#   def load_json_from_file(filename)
+#     return {} unless File.exist?(filename)
+
+#     file = File.read(filename)
+#     JSON.parse(file)
+#   end
+
+#   def find_book_by_title(title)
+#     @books.find { |book| book.title == title }
+#   end
+
+#   def find_person_by_id(id)
+#     @persons.find { |person| person.id == id }
+#   end
 end
