@@ -1,4 +1,5 @@
 require_relative '../person'
+require_relative '../book'
 
 describe Person do
   let(:person) { Person.new(17, 'John Doe', 1) }
