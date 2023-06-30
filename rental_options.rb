@@ -18,11 +18,12 @@ class RentalOptions
   def fill_rentals
     @rentals_objects.each do |rental|
       book = Book.new(rental['title'], rental['author'])
-      if rental['type'] == 'student'
-      person = Student.new(rental['classroom'], rental['age'], rental['name'], rental['id'], parent_permission: rental['parent_permission'])
-      else
-      person = Teacher.new(rental['specialization'], rental['age'], rental['name'], rental['id'])
-      end
+      person = if rental['type'] == 'student'
+                 Student.new(rental['classroom'], rental['age'], rental['name'], rental['id'],
+                             parent_permission: rental['parent_permission'])
+               else
+                 Teacher.new(rental['specialization'], rental['age'], rental['name'], rental['id'])
+               end
       new_rental = Rental.new(rental['date'], book, person)
       @rentals.push(new_rental)
     end

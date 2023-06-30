@@ -18,7 +18,7 @@ class Storage
     begin
       data_from_file = File.read(file_path)
       JSON.parse(data_from_file, create_additions: true)
-    rescue JSON::ParserError => e
+    rescue JSON::ParserError
       []
     end
   end
