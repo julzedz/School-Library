@@ -1,130 +1,100 @@
-require_relative 'book'
-require_relative 'classroom'
-require_relative 'person'
-require_relative 'rental'
-require_relative 'student'
-require_relative 'teacher'
+require_relative 'book_options'
+require_relative 'person_options'
+require_relative 'rental_options'
+require_relative 'storage'
+require 'json'
 
 class App
-  attr_accessor :people, :books, :rentals
-
-  def initialize
-    @books = []
-    @persons = []
-    @rentals = []
+  def initialize(options)
+    @options = options
+    @book_options = BookOptions.new
+    @person_options = PersonOptions.new
+    @rental_options = RentalOptions.new(@book_options, @person_options)
+    @storage = Storage.new('json', './db/')
+    @book_options.books_objects = @storage.load_data('books')
+    @person_options.people_objects = @storage.load_data('people')
+    @rental_options.rentals_objects = @storage.load_data('rentals')
+    @person_options.fill_people if @person_options.people.empty?
+    @book_options.fill_books if @book_options.books.empty?
+    @rental_options.fill_rentals if @rental_options.rentals.empty?
   end
 
-  def list_books
-    if @books.empty?
-      puts 'Oops, you have no book yet!'
+  def store_json_data()
+    books_objects = @book_options.books_objects
+    person_objects = @person_options.people_objects
+    rentals_objects = @rental_options.rentals_objects
+
+    @storage.save_data('books', books_objects)
+    @storage.save_data('people', person_objects)
+    @storage.save_data('rentals', rentals_objects)
+  end
+
+  def check_cases_first(user_response)
+    case user_response
+    when 1
+      list_all_books
+    when 2
+      list_all_people
+    when 3
+      create_person
     else
-      @books.each { |book| puts "[Book] Title: #{book.title}, Author: #{book.author}" }
+      check_cases_second(user_response)
     end
   end
 
-  def list_persons
-    if @persons.empty?
-      puts 'Oops, you have no person added yet!'
+  def check_cases_second(user_response)
+    case user_response
+    when 4
+      create_book
+    when 5
+      create_rental
+    when 6
+      rental_by_id
+    when 7
+      store_json_data
     else
-      @persons.each do |person|
-        if person.is_a? Student
-          print "[Student] Name: #{person.name}, ID: #{person.id} "
-          print "Age: #{person.age}, Classroom: #{person.classroom}\n"
-        elsif person.is_a? Teacher
-          print "[Teacher] Name: #{person.name}, ID: #{person.id} "
-          print "Age: #{person.age}, Specialization: #{person.specialization}\n"
-        end
-      end
+      puts 'Please add a valid number'
     end
   end
 
-  def list_rentals
-    if @rentals.empty?
-      puts 'Oops, you have taken no rents yet.'
-    else
-      @rentals.each do |rental|
-        if rental.person.is_a? Student
-          print "[Rental] Date: #{rental.date}, Title: #{rental.book.title}, Author: #{rental.book.author} "
-          print "[Student] Name: #{rental.person.name}, ID: #{rental.person.id} "
-          print "Age: #{rental.person.age}, Classroom: #{rental.person.classroom}\n"
-        elsif rental.person.is_a? Teacher
-          print "[Rental] Date: #{rental.date}, Title: #{rental.book.title}, Author: #{rental.book.author} "
-          print "[Teacher] Name: #{rental.person.name}, ID: #{rental.person.id} "
-          print "Age: #{rental.person.age}, Specialization: #{rental.person.specialization}\n"
-        end
-      end
+  def select_option(user_response)
+    check_cases_first(user_response)
+  end
+
+  private
+
+  def list_all_books
+    @book_options.list_all_books
+  end
+
+  def list_all_people
+    @person_options.list_all_people
+  end
+
+  def create_person
+    print 'Do you want to create a new student (1) or a teacher (2)? [Input the number]: '
+    select_person = gets.chomp.to_i
+    case select_person
+    when 1
+      @person_options.create_a_student
+    when 2
+      @person_options.create_a_teacher
     end
   end
 
-  def add_persons
-    puts 'Press 1 to add a student or 2 to add a teacher: '
-    option = gets.chomp
-    case option
-    when '1'
-      add_students
-    when '2'
-      add_teachers
-    end
-  end
-
-  def add_students
-    id = Random.rand(1..1000)
-    puts 'Enter name: '
-    name = gets.chomp
-    puts 'Enter age: '
-    age = gets.chomp
-    puts 'Enter classroom: '
-    classroom = gets.chomp
-
-    student = Student.new(id, age, classroom, name, parent_permission: true)
-    @persons.push(student)
-    puts 'You successfully added a student!'
-  end
-
-  def add_teachers
-    id = Random.rand(1..1000)
-    puts 'Enter name: '
-    name = gets.chomp
-    puts 'Enter age: '
-    age = gets.chomp
-    puts 'Enter specialization: '
-    specialization = gets.chomp
-
-    teacher = Teacher.new(id, age, specialization, name, parent_permission: true)
-    @persons.push(teacher)
-    puts 'You successfully added a teacher!'
-  end
-
-  def add_books
-    puts 'Enter title: '
+  def create_book
+    print 'Title: '
     title = gets.chomp
-    puts 'Enter author: '
+    print 'Author: '
     author = gets.chomp
-
-    book = Book.new(title, author)
-    @books.push(book)
-    puts 'You successfully added a teacher!'
+    @book_options.create_new_book(title, author)
   end
 
-  def add_rentals
-    puts 'Enter the index of the book you want to rent: '
-    @books.each_with_index { |book, index| puts "#{index} - Title: #{book.title}, Author: #{book.author}" }
-    book_index = gets.chomp.to_i
+  def create_rental
+    @rental_options.create_a_rental
+  end
 
-    puts 'Enter the index of the person who wants to rent the book: '
-    @persons.each_with_index do |person, index|
-      if person.is_a? Student
-        print "#{index} - [Student] Name: #{person.name}, ID: #{person.id} "
-        print "Age: #{person.age}, Classroom: #{person.classroom}\n"
-      elsif person.is_a? Teacher
-        print "#{index} - [Teacher] Name: #{person.name}, ID: #{person.id} "
-        print "Age: #{person.age}, Specialization: #{person.specialization}\n"
-      end
-    end
-    person_index = gets.chomp.to_i
-
-    rental = Rental.new(@persons[person_index], @books[book_index])
-    @rentals.push(rental)
-    puts 'You successfully added a rental!'
+  def rental_by_id
+    @rental_options.rental_by_id
   end
 end
