@@ -56,6 +56,7 @@ A School Library App built with Ruby using Object Oriented Programming (OOP).
 - **Add Person, Student, Teacher Classes**
 - **Use the "Decorator" design pattern**
 - **Set up Associations**
+- **It's unit tested**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
